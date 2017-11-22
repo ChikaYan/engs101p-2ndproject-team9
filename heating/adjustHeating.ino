@@ -1,4 +1,4 @@
-
+  
 void adjustHeating(float expectedT){
     int pauseTime = 2000, lastTime = 500; // need to be in milliseconds
     float rawOutput = 100;
