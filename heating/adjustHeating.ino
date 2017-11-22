@@ -1,12 +1,13 @@
 
-void adjustHeating(float currentT, float expectedT){
-    float buffer = 2;
-    float heatingLv = 100;
+void adjustHeating(float expectedT){
+    int pauseTime = 2000, lastTime = 500; // need to be in milliseconds
+    float rawOutput = 100;
+    int timer = millis(); // time passed since program started
 
-    //calculations about buffer and heatingLv
+    // calculate pauseTime, lastTime and rawOutput using expectedT
 
-    if (currentT < expectedT - buffer){
-        analogWrite(OUTPIN, heatingLv);
+    if ((timer % (pauseTime + lastTime)<=lastTime)){
+        analogWrite(OUTPIN, rawOutput);
     }else{
         analogWrite(OUTPIN, 0);
     }

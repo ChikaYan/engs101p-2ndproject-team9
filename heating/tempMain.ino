@@ -1,5 +1,7 @@
-#define INPIN 1
-#define OUTPIN 2
+#include <math.h>
+
+#define INPIN 6
+#define OUTPIN 7
 
 void setup()
 {
@@ -9,5 +11,6 @@ void setup()
 
 void loop()
 {
-    //measureTemp()
+    measureTemp()
+    adjustHeating()
 }
