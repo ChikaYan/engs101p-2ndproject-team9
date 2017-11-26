@@ -26,11 +26,11 @@ void loop() {
 
 //  if(pHx > 5.5) {
 //    digitalWrite(acidPump, HIGH);  //supply acid
-//    analogWrite(basePump, LOW);  //do not supply base
+//    digitalWrite(basePump, LOW);  //do not supply base
 //  }
 //  else if(pHx < 4.5){
 //    digitalWrite(basePump, HIGH);  //supply base
-//    analogWrite(acidPump, LOW);  //do not supply acid
+//    digitalWrite(acidPump, LOW);  //do not supply acid
 //  }
 
   delay(2000);  //test
