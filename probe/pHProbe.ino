@@ -16,10 +16,8 @@ void setup() {
 
 void loop() {
   float sensorValue = analogRead(A4);
-  float ExMax = -((3-7)*(R*T*log(10)))/F + Es;
-//  float Ex = map(sensorValue, 0.0, 1023, 0.0, ExMax);
-  float Ex = sensorValue*(ExMax/1023);;
-//  map(sensorValue, 0, maxSensorReading, 0, maxVpH); maxSensorReading at maxVpH, maxVpH depends on temp
+//  float Ex = map(sensorValue, 0.0, 1023.0, 0.0, 3.0);
+  float Ex = sensorValue*(3/1023);
   pHX = pHS + (((Es-Ex)*F)/(R*T*log(10)));
   Serial.println(pHX);
   Serial.println(Ex);
