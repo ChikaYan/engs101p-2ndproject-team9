@@ -5,6 +5,7 @@ int expectedT = 30;
 
 void setup()
 {
+    Serial.begin(9600);
     pinMode(INPIN, INPUT);
     pinMode(OUTPIN, OUTPUT);
 }
@@ -12,5 +13,6 @@ void setup()
 void loop()
 {
     readT();
-    adjustHeating(expectedT);
+    delay(1000);
+    //adjustHeating(expectedT);
 }

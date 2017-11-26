@@ -7,6 +7,7 @@ void readT(){
     int rawInput;
     rawInput = analogRead(INPIN);
     currentT = convertTemperature(rawInput);
+    Serial.println(currentT);
 }
 
 // to convert the temperature Steinhart- Hart- Thermistor Equation has been used below
