@@ -32,6 +32,10 @@ void loop() {
 //    digitalWrite(basePump, HIGH);  //supply base
 //    digitalWrite(acidPump, LOW);  //do not supply acid
 //  }
+//  else {
+//    digitalWrite(basePump, LOW);
+//    digitalWrite(acidPump, LOW);
+//  }
 
   delay(2000);  //test
 }
