@@ -1,27 +1,32 @@
-int Vout = 6;  //analogue voltage input
-int acidPump = 9;  //digital voltage output to transistor gate for acid
-int basePump = 10;  //digital voltage output to transistor gate for base
+int signalIn = 6;  //analogue voltage input from probe (pin 6)
+int offset = 7;  //offset provided (pin 7)
+int acidPump = 9;  //digital voltage output to transistor gate for acid (pin 9)
+int basePump = 10;  //digital voltage output to transistor gate for base (pin 10)
 
 float pHs = 7.0;  //pH of standard solution
-float offset = 0.506;  //offset voltage
+//float Voffset = 0.506;  //offset voltage
 float F = 9.6485309e4;  //Faraday's constant
 float R = 8.314510;  //universal gas constant
 float T = 23.6 + 273.15;  //temperature of solution (K)
 
 void setup() {
   Serial.begin(9600);
+  pinMode(signalIn, INPUT);
+  pinMode(offset, INPUT);
 //  pinMode(acidPump, OUTPUT);
 //  pinMode(basePump, OUTPUT);
 }
 
 void loop() {
-  float sensorValue = analogRead(Vout);  //sensor value for analogue voltage input
+  float signalInSensorValue = analogRead(signalIn);  //sensor value for analogue voltage input
+  float offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
 //  ?doesn't work? float VpH = map(sensorValue, 0.0, 1023.0, 0.0, 3.0);
-  float Vin = sensorValue*(3.0/1023.0);  //voltage input
-  float VpH = Vin - offset;  //voltage produced by probe
+  float Vin = signalInSensorValue*(3.0/1023.0);  //input voltage
+  float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
+  float VpH = Vin - Voffset;  //voltage produced by probe
   float pHx = pHs + ((VpH*F)/(R*T*log(10)));  //pH of unknown solution
 
-  Serial.println(sensorValue);  //test
+  Serial.println(signalInSensorValue - offsetSensorValue);  //test
   Serial.println(pHx);  //test
 
 //  if(pHx > 5.5) {
