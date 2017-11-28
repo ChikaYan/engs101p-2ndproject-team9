@@ -1,14 +1,13 @@
-  
+
 void adjustHeating(float expectedT){
     int pauseTime = 2000, lastTime = 500; // need to be in milliseconds
-    float rawOutput = 100;
     int timer = millis(); // time passed since program started
 
     // calculate pauseTime, lastTime and rawOutput using expectedT
 
-    if ((timer % (pauseTime + lastTime)<=lastTime)){
-        analogWrite(OUTPIN, rawOutput);
+    if ((timer % (pauseTime + lastTime) <= lastTime)){
+        digitalWrite(OUTPIN, HIGH);
     }else{
-        analogWrite(OUTPIN, 0);
+        digitalWrite(OUTPIN, LOW);
     }
 }
