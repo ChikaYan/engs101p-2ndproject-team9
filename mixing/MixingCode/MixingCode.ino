@@ -9,7 +9,7 @@ int pwmValue = 0;
 
 volatile int rpmCounter = 0;
 unsigned long rpmLastReading = 0;
-const unsigned long rpmSampleTime = 3000;
+const unsigned long rpmSampleRate = 20;
 
 void setup()
 {
@@ -31,10 +31,10 @@ void loop()
     }
   }
 
-  if (millis() - rpmLastReading == rpmSampleTime)
+  if (rpmCounter > rpmSampleRate) // More precise way to measure RPM
   {
     detachInterrupt(sensorPin);    //Disable interrupt when calculating
-    rpm = (60000.0 / rpmSampleTime) * (float(rpmCounter) / 2); // 2 interrupts per rotation
+    rpm = (60000.0 / (millis() - rpmLastReading)) * (float(rpmCounter) / 2); // 2 interrupts per rotation
 
     // output to serial
     Serial.print("RPM =\t");
@@ -51,8 +51,13 @@ void loop()
     attachInterrupt(sensorPin, rpmInterrupt, FALLING);
   }
 
+  if(millis() < rpmLastReading) // Handle overflow
+  {
+    rpmLastReading = 0;
+  }
+
   // if current rpm < wanted rpm,
-  // increase the pwm by 1 each second, but getting a measurement every 3?
+  // increase the pwm by 1 each second, but getting a measurement every few seconds?
   analogWrite(motorPin, pwmValue);
 }
 
