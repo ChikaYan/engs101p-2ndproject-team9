@@ -12,7 +12,7 @@ void setup()
 
 void loop()
 {
-    while (Serial.avaliable){ // read serial input for expected temperature
+    while (Serial.available()){ // read serial input for expected temperature
         expectedT = Serial.parseFloat();
     }
     readT();
