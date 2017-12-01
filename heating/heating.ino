@@ -16,6 +16,5 @@ void loop()
         expectedT = Serial.parseFloat();
     }
     readT();
-    delay(1000);
-    //adjustHeating(expectedT);
+    adjustHeating(expectedT);
 }
