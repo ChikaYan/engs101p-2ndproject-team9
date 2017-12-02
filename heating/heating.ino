@@ -12,9 +12,14 @@ void setup()
 
 void loop()
 {
+    float lastT = expectedT;
     while (Serial.available()){ // read serial input for expected temperature
         expectedT = Serial.parseFloat();
     }
+//    if (lastT != expectedT){
+//        Serial.println("New temperature is: " + String(expectedT));
+//        lastT = expectedT;
+//    }
     //readT();
     //adjustHeating(expectedT);
 }
