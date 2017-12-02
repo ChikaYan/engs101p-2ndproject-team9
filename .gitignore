@@ -1,3 +1,5 @@
 .example
 .vs
 .DS_Store
+.idea
+venv
