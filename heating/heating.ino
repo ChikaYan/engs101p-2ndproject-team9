@@ -1,6 +1,6 @@
 #include <math.h>
 
-const int INPIN = 6, OUTPIN = 7;
+const int INPIN = 6, OUTPIN = 7, OUTPUT_INTERVAL = 500;
 float expectedT = 30;
 
 void setup()
@@ -15,6 +15,6 @@ void loop()
     while (Serial.available()){ // read serial input for expected temperature
         expectedT = Serial.parseFloat();
     }
-    readT();
-    adjustHeating(expectedT);
+    //readT();
+    //adjustHeating(expectedT);
 }
