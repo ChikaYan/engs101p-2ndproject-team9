@@ -12,13 +12,14 @@ class Menu:
         Label(text="-- by ENGS101P 2nd Project Team 9", padx=1, pady=1).grid(row=1, column=1, sticky=N)
 
         self.mix_button = ttk.Button(self.master, text="Mixing Control", command=self.open_mix())
-        self.mix_button.grid(row=2, column=1, sticky=N)
+        self.mix_button.grid(row=2, column=1, sticky=N, padx=2, pady=6)
         self.heat_button = ttk.Button(self.master, text="Heating Control", command=self.open_heat())
-        self.heat_button.grid(row=3, column=1, sticky=N)
+        self.heat_button.grid(row=3, column=1, sticky=N, padx=2, pady=6)
         self.ph_button = ttk.Button(self.master, text="pH Control", command=self.open_ph())
-        self.ph_button.grid(row=4, column=1, sticky=N)
+        self.ph_button.grid(row=4, column=1, sticky=N, padx=2, pady=6)
 
-        set_spacing(self.master, 6, 40)
+
+        # set_spacing(self.master, 6, 40)
 
     def open_mix(self):
         pass
