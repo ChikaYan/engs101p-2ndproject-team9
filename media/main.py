@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from heat import HeatControl
 
 
 class Menu:
@@ -7,6 +8,8 @@ class Menu:
         self.master = root
         self.master.title("Bioreactor Controller Team 9")
         self.master.geometry("200x300")
+
+        self.heat_control, self.mix_control, self.ph_control = None, None, None
 
         Label(text="Bioreactor Controller", padx=1, pady=1).grid(row=0, column=1, sticky=N)
         Label(text="-- by ENGS101P 2nd Project Team 9", padx=1, pady=1).grid(row=1, column=1, sticky=N)
@@ -26,7 +29,8 @@ class Menu:
         pass
 
     def open_heat(self):
-        pass
+        if self.heat_control is None:
+            self.heat_control = HeatControl(self.master)
 
     def open_ph(self):
         pass
