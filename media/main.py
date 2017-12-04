@@ -11,8 +11,6 @@ class Menu:
         self.master.title("Bioreactor Controller Team 9")
         self.master.geometry("200x300")
 
-        self.heat_control, self.mix_control, self.ph_control = None, None, None
-
         Label(text="Bioreactor Controller").grid(row=0, column=1, sticky=N)
         Label(text="-- by ENGS101P 2nd Project Team 9").grid(row=1, column=1, sticky=N)
 
