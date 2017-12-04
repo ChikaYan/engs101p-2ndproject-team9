@@ -2,7 +2,11 @@ from tkinter import *
 from tkinter import ttk
 import subcontrol
 from heat import HeatControl
-#import serial
+from ph import PhControl
+from mix import MixControl
+
+
+# import serial
 
 
 class Menu:
@@ -24,13 +28,10 @@ class Menu:
         self.exit_button = ttk.Button(self.master, text="Exit", command=self.master.quit)
         self.exit_button.grid(row=5, column=1, sticky=N, padx=2, pady=20)
 
-        self.heat_control = HeatControl(self.master, "Heating Control",
-                                        "Target Temperature: 30C",
+        self.heat_control = HeatControl(self.master, "Heating Control", "Target Temperature: 30.0C",
                                         "Current Temperature: Unknown", True)
-        self.mix_control = subcontrol.SubControl(self.master, "Mixing Control", "Target RPM: 100",
-                                                 "Current RPM: Unknown", True)
-        self.ph_control = subcontrol.SubControl(self.master, "Ph Control", "Target Ph: 5",
-                                                "Current Ph: Unknown", False)
+        self.mix_control = MixControl(self.master, "Mixing Control", "Target RPM: 100", "Current RPM: Unknown", True)
+        self.ph_control = PhControl(self.master, "Ph Control", "Target Ph: 5", "Current Ph: Unknown", False)
 
         self.heat_control.hide()
         self.ph_control.hide()

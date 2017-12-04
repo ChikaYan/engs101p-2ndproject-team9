@@ -1,6 +1,6 @@
 #include <math.h>
 
-const int INPIN = 6, OUTPIN = 7, OUTPUT_INTERVAL = 500;
+const int INPIN = 6, OUTPIN = 7, OUTPUT_INTERVAL = 100;
 float expectedT = 30;
 
 void setup()
