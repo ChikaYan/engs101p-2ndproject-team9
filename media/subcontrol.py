@@ -21,6 +21,7 @@ class SubControl:
 
         Label(self.text_display, textvariable=self.target_var).grid(row=0, column=0, padx=25)
         Label(self.text_display, textvariable=self.current_var).grid(row=0, column=1, padx=25)
+
         if need_input:
             self.entry = ttk.Entry(self.text_display, width=25)
             self.entry.grid(row=1, column=0)
@@ -33,6 +34,10 @@ class SubControl:
     def show(self):
         self.master.iconify()
 
+    def set_current(self, current_text):
+        self.current_var.set(current_text)
+
     def capture(self):
-        "should be overriden"
+        """Function to capture user input in the entry box
+        should be overriden"""
         pass
