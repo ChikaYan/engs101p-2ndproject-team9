@@ -20,6 +20,6 @@ void loop()
 //        Serial.println("New temperature is: " + String(expectedT));
 //        lastT = expectedT;
 //    }
-    //readT();
-    //adjustHeating(expectedT);
+    readT();
+    adjustHeating(expectedT);
 }
