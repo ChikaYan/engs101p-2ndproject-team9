@@ -1,13 +1,14 @@
 from tkinter import *
 from tkinter import ttk
 import subcontrol
+import serial
 
 # need to add serial support
 
 
-target_rpm = 100
+target_rpm = 1500
 target_ph = 7
-
+target_temp = 30
 
 class Menu:
     def __init__(self, root):
@@ -31,18 +32,25 @@ class Menu:
         self.exit_button.grid(row=5, column=1, sticky=N, padx=2, pady=20)
         # set_spacing(self.master, 6, 40)
 
-        self.heat_control = subcontrol.SubControl(self.master, "Heating Control", "Target Temperature: 30C",
+        self.heat_control = subcontrol.SubControl(self.master, "Heating Control", "Target Temperature: " + str(target_temp),
                                                   "Current Temperature: Unknown")
+        self.mix_control = subcontrol.SubControl(self.master, "Mixing Control", "Target RPM: " + str(target_rpm),
+                                                  "Current RPM: Unknown")
+        self.ph_control = subcontrol.SubControl(self.master, "Ph Control", "Target Ph: " + str(target_ph),
+                                                  "Current Ph: Unknown")
+
         self.heat_control.hide()
+        self.ph_control.hide()
+        self.mix_control.hide()
 
     def open_mix(self):
-        pass
+        self.mix_control.show()
 
     def open_heat(self):
         self.heat_control.show()
 
     def open_ph(self):
-        pass
+        self.ph_control.show()
 
 
 def main():
