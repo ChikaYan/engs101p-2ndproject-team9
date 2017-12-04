@@ -6,7 +6,6 @@
 float rpm = 0;
 float rpmInput = 0;
 int pwmValue = 0;
-float rpmMaxPWM = 2000;
 volatile int rpmCounter = 0;
 unsigned long rpmLastReading = 0;
 const unsigned long rpmSampleTime = 3000;
@@ -32,17 +31,17 @@ void loop()
     pwmValue = getPWMEstimate(rpmInput);
   }
 
-  if (millis() - rpmLastReading >= rpmSampleTime)
+  if (millis() - rpmLastReading >= rpmSampleTime) // Enough time has passed to sample RPM
   {
     detachInterrupt(sensorPin);    //Disable interrupt when calculating
     rpm = (60000.0 / rpmSampleTime) * (float(rpmCounter) / 2); // 2 interrupts per rotation
     if (rpm < rpmInput)
     {
-      pwmValue++;
+      pwmValue += 1; // Change to appropriate
     }
     if (rpm > rpmInput)
     {
-      pwmValue--;
+      pwmValue -= 1;
     }
 
     // output to serial
@@ -65,14 +64,15 @@ void loop()
     rpmLastReading = 0;
   }
 
-  analogWrite(motorPin, pwmValue); // if using MSP430 to lower voltage, divide this value by 2
+  analogWrite(motorPin, pwmValue); // divide by 2 for 6 volts input
   analogWrite(14, pwmValue);
 }
 
 int getPWMEstimate(float rpmInput) // Get a rough estimate of the correct PWM value
 {
-  float m = rpmMaxPWM / 255;
-  int pwmEstimate = rpmInput / m;
+  float m = (1500 - 500) / 255; // change 255 to difference in measurement value PWM, 1500 to higher, 500 to lower
+  float c = 500 - (sample1rpm * m);
+  int pwmEstimate = (rpmInput - c) / m;
   return pwmEstimate;
 }
 
