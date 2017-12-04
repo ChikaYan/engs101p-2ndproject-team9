@@ -4,12 +4,10 @@ void adjustHeating(float expectedT){
     int timer = millis(); // time passed since program started
 
     // calculate pauseTime, lastTime and rawOutput using expectedT
-
-    if ((timer % (pauseTime + lastTime) <= lastTime)){
-        digitalWrite(OUTPIN, HIGH);
-        Serial.println("on");
-    }else{
-        digitalWrite(OUTPIN, LOW);
-        Serial.println("off");
-    }
+    digitalWrite(OUTPIN, HIGH);
+//    if ((timer % (pauseTime + lastTime) <= lastTime)){
+//        digitalWrite(OUTPIN, HIGH);
+//    }else{
+//        digitalWrite(OUTPIN, LOW);
+//    }
 }

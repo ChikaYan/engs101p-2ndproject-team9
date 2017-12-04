@@ -19,10 +19,12 @@ class SubControl:
         self.text_display = ttk.Frame(self.master, height=100, width=600)
         self.text_display.grid()
 
-        self.entry = ttk.Entry(self.text_display, width=100)
-
-        Label(self.text_display, textvariable=self.target_var).grid(row=0, column=0,padx=25)
+        Label(self.text_display, textvariable=self.target_var).grid(row=0, column=0, padx=25)
         Label(self.text_display, textvariable=self.current_var).grid(row=0, column=1, padx=25)
+        self.entry = ttk.Entry(self.text_display,width=25)
+        self.entry.grid(row=1, column=0)
+        self.update_button = ttk.Button(self.text_display, text="Update Target Value", command=self.capture)
+        self.update_button.grid(row=1, column=1)
 
     def hide(self):
         self.master.withdraw()
