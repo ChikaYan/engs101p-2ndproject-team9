@@ -3,7 +3,7 @@ from tkinter import ttk
 
 
 class SubControl:
-    def __init__(self, root, title, target_init, current_init):
+    def __init__(self, root, title, target_init, current_init, need_input):
         self.master = Toplevel(root)
         self.master.title = title
         self.master.geometry("600x500")
@@ -21,10 +21,11 @@ class SubControl:
 
         Label(self.text_display, textvariable=self.target_var).grid(row=0, column=0, padx=25)
         Label(self.text_display, textvariable=self.current_var).grid(row=0, column=1, padx=25)
-        self.entry = ttk.Entry(self.text_display,width=25)
-        self.entry.grid(row=1, column=0)
-        self.update_button = ttk.Button(self.text_display, text="Update Target Value", command=self.capture)
-        self.update_button.grid(row=1, column=1)
+        if need_input:
+            self.entry = ttk.Entry(self.text_display, width=25)
+            self.entry.grid(row=1, column=0)
+            self.update_button = ttk.Button(self.text_display, text="Update Target Value", command=self.capture)
+            self.update_button.grid(row=1, column=1)
 
     def hide(self):
         self.master.withdraw()

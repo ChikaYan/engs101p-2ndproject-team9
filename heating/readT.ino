@@ -9,7 +9,9 @@ void readT(){
     currentT = convertTemperature(rawInput);
     int timer = millis();
     if (timer % OUTPUT_INTERVAL == 0){
-      Serial.print("CurrentT: ");
+      Serial.print("Time:(");
+      Serial.print(timer);
+      Serial.print(") CurrentT: ");
       Serial.println(currentT);
     }
 }
