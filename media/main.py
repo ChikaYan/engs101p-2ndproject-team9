@@ -1,7 +1,13 @@
 from tkinter import *
 from tkinter import ttk
-from heat import HeatControl
+import heat
 
+
+# need to add serial support
+
+target_tp = DoubleVar()
+target_rpm = 100
+target_ph = 7
 
 class Menu:
     def __init__(self, root):
@@ -11,8 +17,8 @@ class Menu:
 
         self.heat_control, self.mix_control, self.ph_control = None, None, None
 
-        Label(text="Bioreactor Controller", padx=1, pady=1).grid(row=0, column=1, sticky=N)
-        Label(text="-- by ENGS101P 2nd Project Team 9", padx=1, pady=1).grid(row=1, column=1, sticky=N)
+        Label(text="Bioreactor Controller").grid(row=0, column=1, sticky=N)
+        Label(text="-- by ENGS101P 2nd Project Team 9").grid(row=1, column=1, sticky=N)
 
         self.mix_button = ttk.Button(self.master, text="Mixing Control", command=self.open_mix)
         self.mix_button.grid(row=2, column=1, sticky=N, padx=2, pady=6)
@@ -30,7 +36,7 @@ class Menu:
 
     def open_heat(self):
         if self.heat_control is None:
-            self.heat_control = HeatControl(self.master)
+            self.heat_control = heat.HeatControl(self.master)
 
     def open_ph(self):
         pass
