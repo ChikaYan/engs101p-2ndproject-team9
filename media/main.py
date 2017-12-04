@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import subcontrol
 from heat import HeatControl
-import serial
+#import serial
 
 
 class Menu:
@@ -25,7 +25,6 @@ class Menu:
 
         self.exit_button = ttk.Button(self.master, text="Exit", command=self.master.quit)
         self.exit_button.grid(row=5, column=1, sticky=N, padx=2, pady=20)
-        # set_spacing(self.master, 6, 40)
 
         self.heat_control = HeatControl(self.master, "Heating Control",
                                         "Target Temperature: 30C",
