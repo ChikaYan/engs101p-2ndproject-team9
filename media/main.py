@@ -1,18 +1,18 @@
 from tkinter import *
 from tkinter import ttk
-import subcontrol
 from heat import HeatControl
 from ph import PhControl
 from mix import MixControl
 
-
 import serial
+
 ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
 root = Tk()
 
+
 class Menu:
-    def __init__(self, root):
-        self.master = root
+    def __init__(self, master):
+        self.master = master
         self.master.title("Bioreactor Controller Team 9")
         self.master.geometry("200x300")
 
@@ -47,16 +47,19 @@ class Menu:
     def open_ph(self):
         self.ph_control.show()
 
-def read_serial(): # To write Serial, just use ser.write() as bytes
-    ser_input = ser.readline() # reads bytes in
-    if(ser_input != b""): # Check it didn't read nothing
-        print(ser_input.decode()) # do something with the input here
-    root.after(1000, read_serial) # Needed to read from Serial every 1000 ms
+
+def read_serial():  # To write Serial, just use ser.write() as bytes
+    ser_input = ser.readline()  # reads bytes in
+    if ser_input != b"":  # Check it didn't read nothing
+        print(ser_input.decode())  # do something with the input here
+    root.after(1000, read_serial)  # Needed to read from Serial every 1000 ms
+
 
 def main():
     menu = Menu(root)
     root.after(1000, read_serial)
     root.mainloop()
+
 
 if __name__ == '__main__':
     main()
