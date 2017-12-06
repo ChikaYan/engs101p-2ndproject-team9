@@ -1,4 +1,5 @@
 from subcontrol import SubControl
+from tkinter import messagebox
 
 
 class HeatControl(SubControl):
@@ -8,7 +9,6 @@ class HeatControl(SubControl):
             if not (25 <= temp and temp <= 35):
                 raise ValueError
             self.target_var.set("Target Temperature: " + str(temp) + "C")
-            self.ser.write("TTEM"+str(temp))
+            self.ser.write("TTEM" + str(temp))
         except ValueError:
-            # display error message
-            pass
+            messagebox.showerror("Error", "Target temperature can only be a number between 25 and 35")
