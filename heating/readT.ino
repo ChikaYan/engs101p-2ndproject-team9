@@ -7,14 +7,14 @@ void readT(){
     int rawInput;
     rawInput = analogRead(INPIN);
     currentT = convertTemperature(rawInput);
+    timer = abs(millis());
 
-
-    if (mills()- lastOutput >= OUTPUT_INTERVAL) {
+    if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
       Serial.print("Time:(");
       Serial.print(timer);
       Serial.print(") CurrentT: ");
       Serial.println(currentT);
-      lastOutput = mills();
+      lastOutput = timer;
     }
 }
 
