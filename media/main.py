@@ -3,11 +3,7 @@ from tkinter import ttk
 from heat import HeatControl
 from ph import PhControl
 from mix import MixControl
-
 import serial
-
-ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
-root = Tk()
 
 
 class Menu:
@@ -25,15 +21,17 @@ class Menu:
         self.heat_button.grid(row=3, column=1, sticky=N, padx=2, pady=6)
         self.ph_button = ttk.Button(self.master, text="pH Control", command=self.open_ph)
         self.ph_button.grid(row=4, column=1, sticky=N, padx=2, pady=6)
-
         self.exit_button = ttk.Button(self.master, text="Exit", command=self.master.quit)
         self.exit_button.grid(row=5, column=1, sticky=N, padx=2, pady=20)
 
-        self.heat_control = HeatControl(self.master, "Heating Control", "Target Temperature: 30.0C",
-                                        "Current Temperature: Unknown", True)
-        self.mix_control = MixControl(self.master, "Mixing Control", "Target RPM: 100", "Current RPM: Unknown", True)
-        self.ph_control = PhControl(self.master, "Ph Control", "Target Ph: 5", "Current Ph: Unknown", False)
+        self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
+        self.master.after(1000, self.read_serial())
 
+        self.heat_control = HeatControl(self.master, "Heating Control", "Target Temperature: 30.0C",
+                                        "Current Temperature: Unknown", True, self.ser)
+        self.mix_control = MixControl(self.master, "Mixing Control", "Target RPM: 100", "Current RPM: Unknown", True,
+                                      self.ser)
+        self.ph_control = PhControl(self.master, "Ph Control", "Target Ph: 5", "Current Ph: Unknown", False, self.ser)
         self.heat_control.hide()
         self.ph_control.hide()
         self.mix_control.hide()
@@ -47,17 +45,17 @@ class Menu:
     def open_ph(self):
         self.ph_control.show()
 
-
-def read_serial():  # To write Serial, just use ser.write() as bytes
-    ser_input = ser.readline()  # reads bytes in
-    if ser_input != b"":  # Check it didn't read nothing
-        print(ser_input.decode())  # do something with the input here
-    root.after(1000, read_serial)  # Needed to read from Serial every 1000 ms
+    def read_serial(self):  # To write Serial, just use ser.write() as bytes
+        ser_input = self.ser.readline()  # reads bytes in
+        if ser_input != b"":  # Check it didn't read nothing
+            print(ser_input.decode())  # do something with the input here
+        self.master.after(1000, self.read_serial)  # Needed to read from Serial every 1000 ms
 
 
 def main():
-    menu = Menu(root)
-    root.after(1000, read_serial)
+    root = Tk()
+    Menu(root)
+    # root.after(1000, read_serial) what does this do?
     root.mainloop()
 
 

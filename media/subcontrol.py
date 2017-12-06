@@ -3,7 +3,7 @@ from tkinter import ttk
 
 
 class SubControl:
-    def __init__(self, root, title, target_init, current_init, need_input):
+    def __init__(self, root, title, target_init, current_init, need_input, ser):
         self.master = Toplevel(root)
         self.master.title = title
         self.master.geometry("600x500")
@@ -13,6 +13,7 @@ class SubControl:
         self.target_var, self.current_var = StringVar(), StringVar()
         self.target_var.set(target_init)
         self.current_var.set(current_init)
+        self.ser = ser
 
         self.graph = ttk.Frame(self.master, height=400, width=550, relief=SUNKEN)
         self.graph.grid(padx=25)

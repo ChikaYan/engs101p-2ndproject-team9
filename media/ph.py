@@ -2,4 +2,4 @@ from subcontrol import SubControl
 
 
 class PhControl(SubControl):
-    pass
+    pass  # pH control doesn't need input
