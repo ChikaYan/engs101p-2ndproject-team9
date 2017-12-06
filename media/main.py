@@ -11,8 +11,8 @@ class Menu:
         self.master = master
 
         self.ser = None
-        # self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
-        # self.master.after(1000, self.read_serial())
+        self.ser = serial.Serial("COMP4", 9600, timeout=0)
+        self.master.after(1000, self.read_serial())
 
         self.heat_control = HeatControl(self.master, "Heating Control", "Target Temperature: 30.0C",
                                         "Current Temperature: Unknown", True, self.ser)
@@ -40,13 +40,20 @@ class Menu:
         ser_input = self.ser.readline()  # reads bytes in
         if ser_input != b"":  # Check it didn't read nothing
             print(ser_input.decode())  # do something with the input here
+            s_input = ser_input.decode()
+            if s_input.startswith("CRPM"):
+                self.mix_control.set_current("Current RPM: " + s_input[4:])
+            elif s_input.startswith("CTEM"):
+                self.heat_control.set_current("Current Temperature: " + s_input[4:])
+            elif s_input.startswith("CUPH"):
+                self.ph_control.set_current("Current pH: " + s_input[4:])
+
         self.master.after(1000, self.read_serial)  # Needed to read from Serial every 1000 ms
 
 
 def main():
     root = Tk()
     Menu(root)
-    # root.after(1000, read_serial) what does this do?
     root.mainloop()
 
 
