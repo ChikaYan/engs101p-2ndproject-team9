@@ -2,7 +2,7 @@
 
 const int INPIN = 6, OUTPIN = 7, OUTPUT_INTERVAL = 100;
 float expectedT = 30;
-int last_output = 0;
+int lastOutput = 0;
 
 void setup()
 {
