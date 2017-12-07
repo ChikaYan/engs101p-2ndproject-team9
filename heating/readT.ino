@@ -3,16 +3,13 @@
 #include <math.h>
 
 void readT(){
-    float currentT;
     int rawInput;
     rawInput = analogRead(INPIN);
     currentT = convertTemperature(rawInput);
-    timer = abs(millis());
+    int timer = abs(millis());
 
     if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
-      Serial.print("Time:(");
-      Serial.print(timer);
-      Serial.print(") CurrentT: ");
+      Serial.print("CTEM");
       Serial.println(currentT);
       lastOutput = timer;
     }

@@ -1,7 +1,7 @@
 #include <math.h>
 
 const int INPIN = 6, OUTPIN = 7, OUTPUT_INTERVAL = 100;
-float expectedT = 30;
+float expectedT = 30, currentT;
 int lastOutput = 0;
 
 void setup()
@@ -22,5 +22,5 @@ void loop()
 //        lastT = expectedT;
 //    }
     readT();
-    adjustHeating(expectedT);
+    adjustHeating();
 }
