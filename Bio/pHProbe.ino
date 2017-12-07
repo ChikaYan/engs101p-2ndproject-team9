@@ -21,7 +21,11 @@ void setup() {
 }
 
 void loop() {
-  if(millis() % 200 == 0) { //checks pHx every 2 seconds, adds acid/base for 2/10 second
+   timer = abs(millis());
+
+    if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
+      lastOutput = timer;
+    
     digitalWrite(basePump, LOW);  //do not supply base
     digitalWrite(acidPump, LOW);  //do not supply acid
   
@@ -40,9 +44,9 @@ void loop() {
       sum = 0;  //reset sum
       i = 0;  //reset counter
   
-      Serial.print("pH = ");
-      Serial.println(averagepHx);  //print pHx
-      // Serial.print("Voffset = ");
+//      Serial.print("pH = ");
+//      Serial.println(averagepHx);  //print pHx
+//      // Serial.print("Voffset = ");
       // Serial.println(Voffset);  //print offset
       // Serial.print("VpH = ");
       // Serial.println(VpH);  //print p.d. of probe
@@ -58,5 +62,7 @@ void loop() {
        digitalWrite(acidPump, LOW);  //do not supply acid
       }
     }
+    Serial.print("CUPH");
+    Serial.println(averagepHx);
   }
 }
