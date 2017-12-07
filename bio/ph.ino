@@ -12,26 +12,26 @@ void ph() {
         short int offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
         float Vin = signalInSensorValue/1023.0;  //input voltage
         float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
-        //float VpH =Vin - Voffset ;  //voltage produced by probe
-        float pHx = 7.0 + ((-(Vin - Voffset)*9.6485309e4)/(8.314510*(currentT+273.15)*log(10)));  //pH of unknown solution
+        //float VpH = Vin - Voffset ;  //voltage produced by probe
+        float pHx = 7.0 + ((-(Vin - Voffset) * 9.6485309e4) / (8.314510 * (currentT + 273.15) * log(10)));  //pH of unknown solution
 
-        sum += pHx; //sum of 10 pHx values
+        sum += pHx;  //sum of 20 pHx values
         i++;  //increment counter
 
         if (i == 19) {
-            averagepHx = sum / 20.0; //calculates average pHx
+            averagepHx = sum / 20.0;  //calculates average pHx
             sum = 0;  //reset sum
             i = 0;  //reset counter
 
-            //      Serial.print("pH = ");
-            //      Serial.println(averagepHx);  //print pHx
-            //      // Serial.print("Voffset = ");
-            // Serial.println(Voffset);  //print offset
-            // Serial.print("VpH = ");
-            // Serial.println(VpH);  //print p.d. of probe
+            //Serial.print("pH = ");
+            //Serial.println(averagepHx);  //print pHx
+            //Serial.print("Voffset = ");
+            //Serial.println(Voffset);  //print offset
+            //Serial.print("VpH = ");
+            //Serial.println(VpH);  //print p.d. of probe
 
             if(averagepHx > 5.5 && averagepHx < 14) {
-                digitalWrite(acidPump, HIGH); //supply acid
+                digitalWrite(acidPump, HIGH);  //supply acid
             }
             else if(averagepHx < 4.5 && averagepHx > 0){
                 digitalWrite(basePump, HIGH);  //supply base
@@ -41,11 +41,10 @@ void ph() {
                 digitalWrite(acidPump, LOW);  //do not supply acid
             }
         }
-
     }
 }
 
 void outputPh(){
-    Serial.print("CUPH");
-    Serial.println(averagepHx);
+    Serial.print("CUPH");  //prefix for python to read
+    Serial.println(averagepHx);  //print average pH
 }
