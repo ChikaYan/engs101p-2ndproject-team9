@@ -9,8 +9,7 @@ class MixControl(SubControl):
         self.target_var.set("Target RPM: 100")
         self.current_var.set("Current RPM: Unknown")
 
-        file = None  # open file here
-        Canvas(self.graph, file, "Time/min", "RPM")
+        Canvas(self.graph, "logs/mix.log", "Time/min", "RPM")
 
     def capture(self):
         try:
