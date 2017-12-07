@@ -6,10 +6,7 @@ const int OUTPUT_INTERVAL = 5000;
 #define offset P1_5  //analogue offset input (pin 7)
 #define acidPump P2_1  //digital voltage output to transistor gate for acid (pin 9)
 #define basePump P2_2  //digital voltage output to transistor gate for base (pin 10)
-float pHs = 7.0;  //pH of standard solution
-float F = 9.6485309e4;  //Faraday's constant
-float R = 8.314510;  //universal gas constant
-float T = 24.2 + 273.15;  //temperature of solution (K)
+
 
 float sum = 0;  //sum of 20 pHx readings
 float averagepHx = 0;  //initialise average pHx
