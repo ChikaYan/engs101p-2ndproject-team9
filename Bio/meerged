@@ -1,0 +1,170 @@
+#include <math.h>
+
+#define signalIn P1_4  //analogue voltage input from probe (pin 6)
+#define offset P1_5  //analogue offset input (pin 7)
+#define acidPump P2_1  //digital voltage output to transistor gate for acid (pin 9)
+#define basePump P2_2  //digital voltage output to transistor gate for base (pin 10)
+float pHs = 7.0;  //pH of standard solution
+float F = 9.6485309e4;  //Faraday's constant
+float R = 8.314510;  //universal gas constant
+float T = 24.2 + 273.15;  //temperature of solution (K)
+
+float sum = 0;  //sum of 20 pHx readings
+float averagepHx = 0;  //initialise average pHx
+int i = 0;  //counter
+
+//for the stirring motor
+#define sensorPin P1_5
+#define motorPin P2_2
+float rpm = 0;
+float rpmInput = 0;
+int pwmValue = 0;
+volatile int rpmCounter = 0;
+unsigned long rpmLastReading = 0;
+const unsigned long rpmSampleTime = 5000;
+
+//for the temperature
+const int INPIN = 6, OUTPIN = 7, OUTPUT_INTERVAL = 5000;
+float expectedT = 30;
+int lastOutput = 0;
+
+
+
+
+void setup() {
+  Serial.begin(9600);
+  //for the pH
+  pinMode(signalIn, INPUT);  //initialise input
+  pinMode(offset, INPUT);  //initialise input
+  pinMode(acidPump, OUTPUT);  //initialise output
+  pinMode(basePump, OUTPUT);  //initialise output
+  
+  //for temperature
+  pinMode(INPIN, INPUT);
+  pinMode(OUTPIN, OUTPUT);
+
+  //for the stirring
+  pinMode(sensorPin, INPUT);
+  pinMode(motorPin, OUTPUT);
+  attachInterrupt(sensorPin, rpmInterrupt, FALLING);
+}
+
+void loop() {
+  //for motor
+  {
+  while (Serial.available()) // Grab input from Serial monitor sent by UI program
+  {
+    Serial.println(millis());
+    float input = Serial.parseFloat();
+    if (input >= 500 && input <= 1500)
+    {
+      rpmInput = input;
+    }
+    pwmValue = getPWMEstimate(rpmInput);
+  }
+
+  if (millis() - rpmLastReading >= rpmSampleTime) // Enough time has passed to sample RPM
+  {
+    detachInterrupt(sensorPin);    //Disable interrupt when calculating
+    rpm = (60000.0 / rpmSampleTime) * (float(rpmCounter) / 2); // 2 interrupts per rotation
+    if (rpm < rpmInput)
+    {
+      pwmValue += 1; // Change to appropriate
+    }
+    if (rpm > rpmInput)
+    {
+      pwmValue -= 1;
+    }
+
+    // output to serial
+    Serial.print("RPM =\t");
+    Serial.print(rpm);
+    Serial.print("\t Hz=\t");
+    Serial.print(float(rpmCounter) / 2);
+    Serial.print("\t Desired RPM=\t");
+    Serial.print(rpmInput);
+    Serial.print("\t PWM=\t");
+    Serial.println(pwmValue);
+
+    rpmCounter = 0;
+    rpmLastReading = millis();
+    attachInterrupt(sensorPin, rpmInterrupt, FALLING);
+  }
+
+  if (millis() < rpmLastReading) // Handle overflow
+  {
+    rpmLastReading = 0;
+  }
+
+  analogWrite(motorPin, pwmValue); // divide by 2 for 6 volts input
+  analogWrite(14, pwmValue);
+}
+
+int getPWMEstimate(float rpmInput) // Get a rough estimate of the correct PWM value
+{
+  float m = (1500 - 500) / 255; // change 255 to difference in measurement value PWM, 1500 to higher, 500 to lower
+  float c = 500 - (sample1rpm * m);
+  int pwmEstimate = (rpmInput - c) / m;
+  return pwmEstimate;
+}
+
+
+void rpmInterrupt()
+{
+  rpmCounter++;
+}
+//for temperature
+  {
+    float lastT = expectedT;
+    while (Serial.available()){ // read serial input for expected temperature
+        expectedT = Serial.parseFloat();
+    }
+//    if (lastT != expectedT){
+//        Serial.println("New temperature is: " + String(expectedT));
+//        lastT = expectedT;
+//    }
+    readT();
+    adjustHeating(expectedT);
+}
+//for the pH
+  {
+  if(millis() % 5000 == 0) { //checks pHx every 2 seconds, adds acid/base for 2/10 second
+    digitalWrite(basePump, LOW);  //do not supply base
+    digitalWrite(acidPump, LOW);  //do not supply acid
+  
+    float signalInSensorValue = analogRead(signalIn);  //sensor value for amplified analogue voltage input
+    float offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
+    float Vin = signalInSensorValue/1023.0;  //input voltage
+    float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
+    float VpH = Vin - Voffset;  //voltage produced by probe
+    float pHx = pHs + ((-VpH*F)/(R*T*log(10)));  //pH of unknown solution
+    
+    sum += pHx; //sum of 10 pHx values
+    i++;  //increment counter
+  
+    if (i == 19) {
+      averagepHx = sum / 20.0; //calculates average pHx
+      sum = 0;  //reset sum
+      i = 0;  //reset counter
+  
+      Serial.print("pH = ");
+      Serial.println(averagepHx);  //print pHx
+      // Serial.print("Voffset = ");
+      // Serial.println(Voffset);  //print offset
+      // Serial.print("VpH = ");
+      // Serial.println(VpH);  //print p.d. of probe
+  
+      if(averagepHx > 5.5 && averagepHx < 14) {
+       digitalWrite(acidPump, HIGH); //supply acid
+      }
+      else if(averagepHx < 4.5 && averagepHx > 0){
+       digitalWrite(basePump, HIGH);  //supply base
+      }
+      else{
+       digitalWrite(basePump, LOW);  //do not supply base
+       digitalWrite(acidPump, LOW);  //do not supply acid
+      }
+    }
+  }
+}
+}
