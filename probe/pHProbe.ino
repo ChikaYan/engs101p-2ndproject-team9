@@ -8,7 +8,7 @@ float F = 9.6485309e4;  //Faraday's constant
 float R = 8.314510;  //universal gas constant
 float T = 24.2 + 273.15;  //temperature of solution (K)
 
-float sum = 0;
+float sum = 0;  //sum of 20 pHx readings
 float averagepHx = 0;  //initialise average pHx
 int i = 0;  //counter
 
@@ -21,31 +21,32 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(basePump, LOW);  //do not supply base
-  digitalWrite(acidPump, LOW);  //do not supply acid
-
-  float signalInSensorValue = analogRead(signalIn);  //sensor value for amplified analogue voltage input
-  float offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
-  float Vin = (signalInSensorValue/1023.0);  //input voltage
-  float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
-  float VpH = Vin - Voffset;  //voltage produced by probe
-  float pHx = pHs + ((-VpH*F)/(R*T*log(10)));  //pH of unknown solution
+  if(millis() % 200 == 0) { //checks pHx every 2 seconds, adds acid/base for 2/10 second
+    digitalWrite(basePump, LOW);  //do not supply base
+    digitalWrite(acidPump, LOW);  //do not supply acid
   
-  sum += pHx; //sum of 10 pHx values
-  i++;  //increment counter
-
-  if (i == 9) {
-      averagepHx = sum / 10.0; //calculates average pHx
+    float signalInSensorValue = analogRead(signalIn);  //sensor value for amplified analogue voltage input
+    float offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
+    float Vin = signalInSensorValue/1023.0;  //input voltage
+    float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
+    float VpH = Vin - Voffset;  //voltage produced by probe
+    float pHx = pHs + ((-VpH*F)/(R*T*log(10)));  //pH of unknown solution
+    
+    sum += pHx; //sum of 10 pHx values
+    i++;  //increment counter
+  
+    if (i == 19) {
+      averagepHx = sum / 20.0; //calculates average pHx
       sum = 0;  //reset sum
       i = 0;  //reset counter
-
+  
       Serial.print("pH = ");
       Serial.println(averagepHx);  //print pHx
       // Serial.print("Voffset = ");
       // Serial.println(Voffset);  //print offset
       // Serial.print("VpH = ");
       // Serial.println(VpH);  //print p.d. of probe
-
+  
       if(averagepHx > 5.5 && averagepHx < 14) {
        digitalWrite(acidPump, HIGH); //supply acid
       }
@@ -53,10 +54,9 @@ void loop() {
        digitalWrite(basePump, HIGH);  //supply base
       }
       else{
-        digitalWrite(basePump, LOW);  //do not supply base
-        digitalWrite(acidPump, LOW);  //do not supply acid
+       digitalWrite(basePump, LOW);  //do not supply base
+       digitalWrite(acidPump, LOW);  //do not supply acid
       }
     }
-
-  delay(100);  //checks pHx every second, adds acid/base for 1/10 second
+  }
 }
