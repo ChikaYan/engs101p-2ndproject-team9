@@ -14,11 +14,10 @@ class Menu:
         # self.ser = serial.Serial("COMP4", 9600, timeout=0)
         # self.master.after(1000, self.read_serial())
 
-        self.heat_control = HeatControl(self.master, "Heating Control", "Target Temperature: 30.0C",
-                                        "Current Temperature: Unknown", True, self.ser)
-        self.mix_control = MixControl(self.master, "Mixing Control", "Target RPM: 100", "Current RPM: Unknown", True,
+        self.heat_control = HeatControl(self.master,  True, self.ser)
+        self.mix_control = MixControl(self.master,  True,
                                       self.ser)
-        self.ph_control = PhControl(self.master, "Ph Control", "Target Ph: 5", "Current Ph: Unknown", False, self.ser)
+        self.ph_control = PhControl(self.master, False, self.ser)
         self.heat_control.hide()
         self.ph_control.hide()
         self.mix_control.hide()
