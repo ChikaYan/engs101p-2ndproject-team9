@@ -8,7 +8,7 @@ float rpmInput = 0;
 int pwmValue = 0;
 volatile int rpmCounter = 0;
 unsigned long rpmLastReading = 0;
-const unsigned long rpmSampleTime = 3000;
+const unsigned long rpmSampleTime = 1500;
 
 void setup()
 {
@@ -22,8 +22,12 @@ void loop()
 {
   while (Serial.available()) // Grab input from Serial monitor sent by UI program
   {
-    Serial.println(millis());
-    float input = Serial.parseFloat();
+    float input = Serial.parseFloat(); // TODO: Might need to check for prefix here.
+    if(input == 0)
+    {
+      rpmInput = 0;
+      pwmValue = 0;
+    }
     if (input >= 500 && input <= 1500)
     {
       rpmInput = input;
@@ -37,22 +41,14 @@ void loop()
     rpm = (60000.0 / rpmSampleTime) * (float(rpmCounter) / 2); // 2 interrupts per rotation
     if (rpm < rpmInput)
     {
-      pwmValue += 1; // Change to appropriate
+      pwmValue += 1;
     }
     if (rpm > rpmInput)
     {
       pwmValue -= 1;
     }
-
-    // output to serial
-    Serial.print("RPM =\t");
-    Serial.print(rpm);
-    Serial.print("\t Hz=\t");
-    Serial.print(float(rpmCounter) / 2);
-    Serial.print("\t Desired RPM=\t");
-    Serial.print(rpmInput);
-    Serial.print("\t PWM=\t");
-    Serial.println(pwmValue);
+    Serial.print("CRPM"); // Prefix for Python to read
+    Serial.println(rpm);
 
     rpmCounter = 0;
     rpmLastReading = millis();
@@ -64,18 +60,15 @@ void loop()
     rpmLastReading = 0;
   }
 
-  analogWrite(motorPin, pwmValue); // divide by 2 for 6 volts input
-  analogWrite(14, pwmValue);
+  analogWrite(motorPin, pwmValue);
 }
 
 int getPWMEstimate(float rpmInput) // Get a rough estimate of the correct PWM value
 {
-  float m = (1500 - 500) / 255; // change 255 to difference in measurement value PWM, 1500 to higher, 500 to lower
-  float c = 500 - (sample1rpm * m);
-  int pwmEstimate = (rpmInput - c) / m;
+  float m = (1500 - 500) / (230 - 130);
+  int pwmEstimate = 130 + ((rpmInput-500) / m);
   return pwmEstimate;
 }
-
 
 void rpmInterrupt()
 {
