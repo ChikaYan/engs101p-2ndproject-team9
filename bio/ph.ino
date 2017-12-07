@@ -1,0 +1,51 @@
+
+void ph() {
+    int timer = abs(millis());
+
+    if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
+        lastOutput = timer;
+
+        digitalWrite(basePump, LOW);  //do not supply base
+        digitalWrite(acidPump, LOW);  //do not supply acid
+
+        float signalInSensorValue = analogRead(signalIn);  //sensor value for amplified analogue voltage input
+        float offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
+        float Vin = signalInSensorValue/1023.0;  //input voltage
+        float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
+        float VpH = Vin - Voffset;  //voltage produced by probe
+        float pHx = pHs + ((-VpH*F)/(R*T*log(10)));  //pH of unknown solution
+
+        sum += pHx; //sum of 10 pHx values
+        i++;  //increment counter
+
+        if (i == 19) {
+            averagepHx = sum / 20.0; //calculates average pHx
+            sum = 0;  //reset sum
+            i = 0;  //reset counter
+
+            //      Serial.print("pH = ");
+            //      Serial.println(averagepHx);  //print pHx
+            //      // Serial.print("Voffset = ");
+            // Serial.println(Voffset);  //print offset
+            // Serial.print("VpH = ");
+            // Serial.println(VpH);  //print p.d. of probe
+
+            if(averagepHx > 5.5 && averagepHx < 14) {
+                digitalWrite(acidPump, HIGH); //supply acid
+            }
+            else if(averagepHx < 4.5 && averagepHx > 0){
+                digitalWrite(basePump, HIGH);  //supply base
+            }
+            else{
+                digitalWrite(basePump, LOW);  //do not supply base
+                digitalWrite(acidPump, LOW);  //do not supply acid
+            }
+        }
+        outPutResults();
+    }
+}
+
+void outputPh(){
+    Serial.print("CUPH");
+    Serial.println(averagepHx);
+}
