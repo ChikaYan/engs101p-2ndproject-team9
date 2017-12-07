@@ -5,5 +5,4 @@ void adjustHeating(){
     }else{
         digitalWrite(OUTPIN, LOW);
     }
-
 }

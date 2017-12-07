@@ -10,22 +10,21 @@ const int OUTPUT_INTERVAL = 5000;
 
 float sum = 0;  //sum of 20 pHx readings
 float averagepHx = 0;  //initialise average pHx
-int i = 0;  //counter
+short int i = 0;  //counter
 
 //for the stirring motor
 #define sensorPin P1_3
 #define motorPin P2_0
 float rpm = 0;
 float rpmInput = 0;
-int pwmValue = 0;
-volatile int rpmCounter = 0;
-unsigned long rpmLastReading = 0;
-const unsigned long rpmSampleTime = 5000;
+short int pwmValue = 0;
+volatile short int rpmCounter = 0;
+
 
 //for the temperature
-const int INPIN = 6, OUTPIN = 7;
+const short int INPIN = 6, OUTPIN = 7;
 float expectedT = 30, currentT;
-int lastOutput = 0, rawInput;
+short int lastOutput = 0;
 
 
 void setup() {
@@ -55,14 +54,9 @@ void loop() {
 void takeInputs(){
     while (Serial.available()){
         float input = Serial.parseFloat();
-        if(input == 0)
-        {
-          rpmInput = 0;
-          pwmValue = 0;
-        }
         if (input >= 500 && input <= 1500){
           rpmInput = input;
-          pwmValue = getPWMEstimate(rpmInput);
+          pwmValue = 130 + ((rpmInput-500) / (1500 - 500) / (230 - 130));
       }else if (input >= 25 && input <= 35){
           expectedT = Serial.parseFloat();
       }

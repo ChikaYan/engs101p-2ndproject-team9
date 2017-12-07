@@ -1,6 +1,5 @@
 
 void ph() {
-    float T = 24.2 + 273.15;  //temperature of solution (K)
     int timer = abs(millis());
 
     if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
@@ -9,12 +8,12 @@ void ph() {
         digitalWrite(basePump, LOW);  //do not supply base
         digitalWrite(acidPump, LOW);  //do not supply acid
 
-        float signalInSensorValue = analogRead(signalIn);  //sensor value for amplified analogue voltage input
-        float offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
+        short int signalInSensorValue = analogRead(signalIn);  //sensor value for amplified analogue voltage input
+        short int offsetSensorValue = analogRead(offset);  //sensor value for analogue offset input
         float Vin = signalInSensorValue/1023.0;  //input voltage
         float Voffset = offsetSensorValue*(3.0/1023.0);  //offset voltage
         //float VpH =Vin - Voffset ;  //voltage produced by probe
-        float pHx = 7.0 + ((-(Vin - Voffset)*9.6485309e4)/(8.314510*currentT*log(10)));  //pH of unknown solution
+        float pHx = 7.0 + ((-(Vin - Voffset)*9.6485309e4)/(8.314510*(currentT+273.15)*log(10)));  //pH of unknown solution
 
         sum += pHx; //sum of 10 pHx values
         i++;  //increment counter
