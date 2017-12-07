@@ -25,6 +25,7 @@ volatile short int rpmCounter = 0;
 const short int INPIN = 6, OUTPIN = 7;
 float expectedT = 30, currentT;
 short int lastOutput = 0;
+short int phLastCheck = 0;
 
 
 void setup() {
@@ -49,6 +50,12 @@ void loop() {
     takeInputs();
     heating();
     ph();
+
+    int timer = abs(millis());
+    if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
+        lastOutput = timer;
+        outPutResults();
+    }
 }
 
 void takeInputs(){

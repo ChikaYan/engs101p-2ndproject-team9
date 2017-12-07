@@ -2,8 +2,8 @@
 void ph() {
     int timer = abs(millis());
 
-    if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
-        lastOutput = timer;
+    if (abs(timer - phLastCheck) >= 200) {
+        phLastCheck = timer;
 
         digitalWrite(basePump, LOW);  //do not supply base
         digitalWrite(acidPump, LOW);  //do not supply acid
@@ -41,7 +41,7 @@ void ph() {
                 digitalWrite(acidPump, LOW);  //do not supply acid
             }
         }
-        outPutResults();
+
     }
 }
 
