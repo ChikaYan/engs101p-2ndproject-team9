@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from graph import Canvas
 
 
 class SubControl:
@@ -17,6 +18,8 @@ class SubControl:
 
         self.graph = ttk.Frame(self.master, height=400, width=550, relief=SUNKEN)
         self.graph.grid(padx=25)
+        Canvas(self.graph)
+
         self.text_display = ttk.Frame(self.master, height=100, width=600)
         self.text_display.grid()
 
