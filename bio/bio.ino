@@ -24,7 +24,7 @@ volatile short int rpmCounter = 0;
 //for the temperature
 const short int INPIN = 6, OUTPIN = 7;
 float expectedT = 30, currentT;
-short int lastOutput = 0, mixLastCheck = 0, phLastCheck = 0;
+long lastOutput = 0, mixLastCheck = 0, phLastCheck = 0;
 
 
 void setup() {
