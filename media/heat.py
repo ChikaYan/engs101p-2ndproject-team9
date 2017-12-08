@@ -14,7 +14,7 @@ class HeatControl(SubControl):
     def capture(self):
         try:
             temp = float(self.entry.get())
-            if not (25 <= temp and temp <= 35):
+            if not 25 <= temp <= 35:
                 raise ValueError
             self.target_var.set("Target Temperature: " + str(temp) + "C")
             self.ser.write(str(temp))

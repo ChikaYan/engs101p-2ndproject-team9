@@ -43,20 +43,21 @@ class Menu:
             ser_input = self.ser.readline()  # reads bytes in
             if ser_input != b"":  # Check it didn't read nothing
                 print(ser_input.decode())  # do something with the input here
-                s_input = ser_input.decode()
+                data = float(ser_input.decode())
                 file = None
-                if s_input.startswith("CRPM"):
-                    self.mix_control.set_current("Current RPM: " + s_input[4:])
+                # distinguish the data from range
+                if 500 <= data <= 1500:
+                    self.mix_control.set_current("Current RPM: " + str(data))
                     file = open("logs/mix.log", "a")
-                elif s_input.startswith("CTEM"):
-                    self.heat_control.set_current("Current Temperature: " + s_input[4:])
+                elif 25 <= data <= 35:
+                    self.heat_control.set_current("Current Temperature: " + str(data))
                     file = open("logs/heat.log", "a")
-                elif s_input.startswith("CUPH"):
-                    self.ph_control.set_current("Current pH: " + s_input[4:])
+                elif 0 <= data <= 14:
+                    self.ph_control.set_current("Current pH: " + str(data))
                     file = open("logs/ph.log", "a")
                 if file:
                     now = datetime.datetime.now()
-                    file.write(str(now.minute) + ":" + s_input[4:])
+                    file.write(str(now.minute) + ":" + str(data))
                     file.close()
 
         self.master.after(READ_INTERVAL, self.read_serial)  # Needed to read from Serial every 1000 ms

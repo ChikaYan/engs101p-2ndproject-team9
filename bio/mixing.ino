@@ -1,7 +1,6 @@
 
 
 void outputRpm(){
-    Serial.print("CRPM"); // Prefix for Python to read
     Serial.println(rpm);
 }
 

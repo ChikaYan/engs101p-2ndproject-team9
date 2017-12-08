@@ -46,6 +46,5 @@ void ph() {
 }
 
 void outputPh(){
-    Serial.print("CUPH");
     Serial.println(averagepHx);
 }

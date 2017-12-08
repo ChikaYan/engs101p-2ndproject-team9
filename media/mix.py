@@ -14,7 +14,7 @@ class MixControl(SubControl):
     def capture(self):
         try:
             temp = int(self.entry.get())
-            if not (500 <= temp and temp <= 1500):
+            if not 500 <= temp <= 1500:
                 raise ValueError
             self.target_var.set("Target RPM: " + str(temp))
             self.ser.write(str(temp))

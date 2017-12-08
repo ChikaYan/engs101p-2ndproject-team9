@@ -6,7 +6,6 @@ void heating(){
 
 void outputT(){
     currentT = convertTemperature(analogRead(INPIN));
-    Serial.print("CTEM");
     Serial.println(currentT);
 }
 
