@@ -45,10 +45,6 @@ void ph() {
 }
 
 void outputPh(){
-<<<<<<< HEAD
-    Serial.println(averagepHx);
-=======
-    Serial.print("CUPH");  //prefix for python to read
     Serial.println(averagepHx);  //print average pH
->>>>>>> 4b2dc80536138d19bb6e3a7d5c51fafd71d848b8
+
 }
