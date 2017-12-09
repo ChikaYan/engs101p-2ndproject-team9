@@ -1,7 +1,11 @@
 #include <math.h>
 
 void heating(){
-    adjustHeating();
+    if (currentT < expectedT - 0.4){
+        digitalWrite(OUTPIN, HIGH);
+    }else{
+        digitalWrite(OUTPIN, LOW);
+    }
 }
 
 void outputT(){
@@ -25,13 +29,4 @@ double convertTemperature(int rawADC){
     double tempCel;
     tempCel = Tempo - 273.15; //subtract 273.15 to get into Celsius
     return tempCel;
-}
-
-
-void adjustHeating(){
-    if (currentT < expectedT - 0.4){
-        digitalWrite(OUTPIN, HIGH);
-    }else{
-        digitalWrite(OUTPIN, LOW);
-    }
 }

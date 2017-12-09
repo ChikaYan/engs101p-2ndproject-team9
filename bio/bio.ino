@@ -7,7 +7,6 @@ const int OUTPUT_INTERVAL = 5000;
 #define acidPump P2_1  //digital voltage output to transistor gate for acid (pin 9)
 #define basePump P2_2  //digital voltage output to transistor gate for base (pin 10)
 
-
 float sum = 0;  //sum of 20 pHx readings
 float averagepHx = 0;  //initialise average pHx
 short int i = 0;  //counter
@@ -51,6 +50,8 @@ void loop() {
     ph();
     adjustRPM();
 
+    //if the difference between last output time and current time is larger than output interval
+    //then output the results and update the last output time
     int timer = abs(millis());
     if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
         lastOutput = timer;
@@ -61,7 +62,11 @@ void loop() {
 void takeInputs(){
     while (Serial.available()){
         float input = Serial.parseFloat();
-        if (input >= 500 && input <= 1500){
+        // distinguish the input by looking at its value
+        if(input == 0){
+          rpmInput = 0;
+          pwmValue = 0;
+      }else if (input >= 500 && input <= 1500){
           rpmInput = input;
           pwmValue = 130 + ((rpmInput-500) / (1500 - 500) / (230 - 130));
       }else if (input >= 25 && input <= 35){

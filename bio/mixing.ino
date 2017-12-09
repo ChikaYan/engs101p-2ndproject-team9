@@ -5,8 +5,9 @@ void outputRpm(){
 }
 
 void adjustRPM(){
+    //same as output delays
     int timer = abs(millis());
-    if (abs(timer - mixLastCheck) >= 1500) {
+    if (abs(timer - mixLastCheck) >= 1500){
         mixLastCheck = timer;
         detachInterrupt(sensorPin);    //Disable interrupt when calculating
         rpm = (60000.0 / 1500) * (float(rpmCounter) / 2); // 2 interrupts per rotation

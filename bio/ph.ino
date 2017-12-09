@@ -1,7 +1,7 @@
 
 void ph() {
+    //same as output delay
     int timer = abs(millis());
-
     if (abs(timer - phLastCheck) >= 200) {
         phLastCheck = timer;
 
