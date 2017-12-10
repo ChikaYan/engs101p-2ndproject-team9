@@ -14,10 +14,10 @@ short int i = 0;  //counter
 //for the stirring motor
 #define sensorPin P1_3
 #define motorPin P2_0
-float rpm = 0;
-float rpmInput = 0;
-short int pwmValue = 0;
-volatile short int rpmCounter = 0;
+float rpm = 0; // RPM reading from sensor
+float rpmInput = 0; // The desired RPM value
+short int pwmValue = 0; // This value is written to the MOSFET
+volatile short int rpmCounter = 0; // Counts the number of interrupts per time interval
 
 
 //for the temperature
@@ -41,42 +41,44 @@ void setup() {
   //for the stirring
   pinMode(sensorPin, INPUT);
   pinMode(motorPin, OUTPUT);
-  attachInterrupt(sensorPin, rpmInterrupt, FALLING);
+  attachInterrupt(sensorPin, rpmInterrupt, FALLING); // Run the function rpmInterrupt everytime the voltage on sensorPin falls. (1->0)
 }
 
 void loop() {
-    takeInputs();
-    heating();
-    ph();
-    adjustRPM();
+  takeInputs();
+  heating();
+  ph();
+  adjustRPM();
 
-    //if the difference between last output time and current time is larger than output interval
-    //then output the results and update the last output time
-    int timer = abs(millis());
-    if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
-        lastOutput = timer;
-        outPutResults();
-    }
+  //if the difference between last output time and current time is larger than output interval
+  //then output the results and update the last output time
+  int timer = abs(millis());
+  if (abs(timer - lastOutput) >= OUTPUT_INTERVAL) {
+    lastOutput = timer;
+    outPutResults();
+  }
 }
 
-void takeInputs(){
-    while (Serial.available()){
-        float input = Serial.parseFloat();
-        // distinguish the input by looking at its value
-        if(input == 0){
-          rpmInput = 0;
-          pwmValue = 0;
-      }else if (input >= 500 && input <= 1500){
-          rpmInput = input;
-          pwmValue = 130 + ((rpmInput-500) / (1500 - 500) / (230 - 130));
-      }else if (input >= 25 && input <= 35){
-          expectedT = Serial.parseFloat();
-      }
+void takeInputs() {
+  while (Serial.available()) {
+    float input = Serial.parseFloat();
+    // distinguish the input by looking at its value
+    if (input == 0) { // Quick way to turn off the motor if needed
+      rpmInput = 0;
+      pwmValue = 0;
+    } else if (input >= 500 && input <= 1500) {
+      rpmInput = input;
+      pwmValue = 130 + ((rpmInput - 500) / (1500 - 500) / (230 - 130)); // Generates an estimate of the PWM value for the desired RPM based off samples taken (assumes linear relationship)
+      // at PWM of 130, the RPM was 500
+      // at PWM of 230, the RPM was 1500
+    } else if (input >= 25 && input <= 35) {
+      expectedT = Serial.parseFloat();
     }
+  }
 }
 
-void outPutResults(){
-    outputT();
-    outputRpm();
-    outputPh();
+void outPutResults() {
+  outputT();
+  outputRpm();
+  outputPh();
 }
