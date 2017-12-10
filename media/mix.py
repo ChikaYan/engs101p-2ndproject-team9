@@ -5,7 +5,7 @@ from graph import Canvas
 
 class MixControl(SubControl):
     def inits(self):
-        self.master.title = "Mixing Control"
+        self.master.title("Mixing Control")
         self.target_var.set("Target RPM: 100")
         self.current_var.set("Current RPM: Unknown")
 
