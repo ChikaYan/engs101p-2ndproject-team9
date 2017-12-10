@@ -14,12 +14,11 @@ class Menu:
         self.master = master
 
         self.ser = None
-        self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
-        self.master.after(1000, self.read_serial())
+        # self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
+        # self.master.after(1000, self.read_serial())
 
         self.heat_control = HeatControl(self.master, True, self.ser)
-        self.mix_control = MixControl(self.master, True,
-                                      self.ser)
+        self.mix_control = MixControl(self.master, True,self.ser)
         self.ph_control = PhControl(self.master, False, self.ser)
         self.heat_control.hide()
         self.ph_control.hide()

@@ -9,7 +9,7 @@ class HeatControl(SubControl):
         self.target_var.set("Target Temperature: 30.0C")
         self.current_var.set("Current Temperature: Unknown")
 
-        Canvas(self.graph, "logs/heat.log", "Time/min", "Temperature/C")
+        Canvas(self.graph, "logs/heat.log", "Temperature/C")
 
     def capture(self):
         try:

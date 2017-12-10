@@ -9,15 +9,15 @@ import time
 
 
 class Canvas:
-    def __init__(self, root, log_path, xlabel, ylabel):
-        self.log_path, self.xlabel, self.ylabel = log_path, xlabel, ylabel
+    def __init__(self, root, log_path, ylabel):
+        self.log_path, self.ylabel = log_path, ylabel
 
         figure = Figure(figsize=(5, 4), dpi=100)
         self.graph = figure.add_subplot(111)
 
         # a tk.DrawingArea
         self.master = FigureCanvasTkAgg(figure, master=root)
-        self.ani = animation.FuncAnimation(figure, self.animate, interval=10)
+        self.ani = animation.FuncAnimation(figure, self.animate, interval=5000)
         self.master.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
 
         # toolbar
@@ -38,6 +38,6 @@ class Canvas:
                 yar.append(float(log_ls[1]))
         self.graph.clear()
         self.graph.plot(xar, yar)
-        self.graph.set_xlabel(self.xlabel)
+        self.graph.set_xlabel("Time/sec")
         self.graph.set_ylabel(self.ylabel)
         file.close()
