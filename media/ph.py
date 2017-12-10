@@ -8,4 +8,4 @@ class PhControl(SubControl):
         self.target_var.set("Target Ph: 5")
         self.current_var.set("Current Ph: Unknown")
 
-        Canvas(self.graph, "logs/ph.log", "pH")
+        self.canva = Canvas(self.graph, "logs/ph.log", "pH")

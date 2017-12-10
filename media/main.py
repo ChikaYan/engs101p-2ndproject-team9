@@ -63,7 +63,7 @@ class Menu:
 
 def main():
     root = Tk()
-    Menu(root)
+    main = Menu(root)
     root.mainloop()
 
 

@@ -8,6 +8,7 @@ class SubControl:
         self.master.geometry("600x500")
         self.target_var, self.current_var = StringVar(), StringVar()
         self.ser = ser
+        self.canva = None
 
         self.graph = ttk.Frame(self.master, height=400, width=550, relief=SUNKEN)
         self.graph.grid(padx=25)
