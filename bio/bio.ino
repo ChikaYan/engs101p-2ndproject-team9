@@ -12,8 +12,8 @@ float averagepHx = 0;  //initialise average pHx
 short int i = 0;  //counter
 
 //for the stirring motor
-#define sensorPin P1_3
-#define motorPin P2_0
+#define sensorPin P2_5
+#define motorPin P2_6
 float rpm = 0; // RPM reading from sensor
 float rpmInput = 500; // The desired RPM value
 short int pwmValue = 130; // This value is written to the MOSFET
