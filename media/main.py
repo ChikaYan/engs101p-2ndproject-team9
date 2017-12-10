@@ -14,8 +14,8 @@ class Menu:
         self.master = master
 
         self.ser = None
-        # self.ser = serial.Serial("COMP4", 9600, timeout=0)
-        # self.master.after(1000, self.read_serial())
+        self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
+        self.master.after(1000, self.read_serial())
 
         self.heat_control = HeatControl(self.master, True, self.ser)
         self.mix_control = MixControl(self.master, True,
@@ -42,7 +42,6 @@ class Menu:
         for i in range(3):  # take three readings every time
             ser_input = self.ser.readline()  # reads bytes in
             if ser_input != b"":  # Check it didn't read nothing
-                print(ser_input.decode())  # do something with the input here
                 data = float(ser_input.decode())
                 file = None
                 # distinguish the data from range
