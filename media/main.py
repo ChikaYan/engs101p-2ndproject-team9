@@ -14,8 +14,8 @@ class Menu:
         self.master = master
 
         self.ser = None
-        # self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
-        # self.master.after(1000, self.read_serial())
+        self.ser = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
+        self.master.after(1000, self.read_serial())
 
         self.heat_control = HeatControl(self.master, True, self.ser)
         self.mix_control = MixControl(self.master, True,self.ser)
@@ -42,6 +42,7 @@ class Menu:
             ser_input = self.ser.readline()  # reads bytes in
             if ser_input != b"":  # Check it didn't read nothing
                 data = float(ser_input.decode())
+                print(data)
                 file = None
                 # distinguish the data from range
                 if 500 <= data <= 1500:
@@ -55,10 +56,10 @@ class Menu:
                     file = open("logs/ph.log", "a")
                 if file:
                     now = datetime.datetime.now()
-                    file.write(str(now.minute) + ":" + str(data))
+                    file.write(str(now.minute) + ":" + str(data) + "\n")
                     file.close()
 
-        self.master.after(READ_INTERVAL, self.read_serial)  # Needed to read from Serial every 1000 ms
+        self.master.after(READ_INTERVAL, self.read_serial)  # Needed to read from Serial every 5000 ms
 
 
 def main():
