@@ -15,8 +15,8 @@ short int i = 0;  //counter
 #define sensorPin P1_3
 #define motorPin P2_0
 float rpm = 0; // RPM reading from sensor
-float rpmInput = 0; // The desired RPM value
-short int pwmValue = 0; // This value is written to the MOSFET
+float rpmInput = 500; // The desired RPM value
+short int pwmValue = 130; // This value is written to the MOSFET
 volatile short int rpmCounter = 0; // Counts the number of interrupts per time interval
 
 
