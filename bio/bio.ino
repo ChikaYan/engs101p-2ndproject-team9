@@ -21,7 +21,7 @@ volatile short int rpmCounter = 0; // Counts the number of interrupts per time i
 
 
 //for the temperature
-const short int INPIN = 6, OUTPIN = 7;
+const short int INPIN = 15, OUTPIN = 14;
 float expectedT = 30, currentT = 25;
 long lastOutput = 0, mixLastCheck = 0, phLastCheck = 0;
 
@@ -66,7 +66,7 @@ void takeInputs() {
     if (input == 0) { // Quick way to turn off the motor if needed
       rpmInput = 0;
       pwmValue = 0;
-    } else if (input >= 500 && input <= 1500) {
+  } else if (input >= 500 && input <= 1500) {
       rpmInput = input;
       pwmValue = 130 + ((rpmInput - 500) / ((1500 - 500) / (230 - 130))); // Generates an estimate of the PWM value for the desired RPM based off samples taken (assumes linear relationship)
       // at PWM of 130, the RPM was 500

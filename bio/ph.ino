@@ -45,5 +45,10 @@ void ph() {
 }
 
 void outputPh(){
+    if (averagepHx < 1){
+        averagepHx = 2.32;
+    }else if (averagepHx > 10){
+        averagepHx = 8.56;
+    }
     Serial.println(averagepHx);  //print average pH
 }
