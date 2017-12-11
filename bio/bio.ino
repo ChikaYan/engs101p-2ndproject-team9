@@ -68,7 +68,7 @@ void takeInputs() {
       pwmValue = 0;
     } else if (input >= 500 && input <= 1500) {
       rpmInput = input;
-      pwmValue = 130 + ((rpmInput - 500) / (1500 - 500) / (230 - 130)); // Generates an estimate of the PWM value for the desired RPM based off samples taken (assumes linear relationship)
+      pwmValue = 130 + ((rpmInput - 500) / ((1500 - 500) / (230 - 130))); // Generates an estimate of the PWM value for the desired RPM based off samples taken (assumes linear relationship)
       // at PWM of 130, the RPM was 500
       // at PWM of 230, the RPM was 1500
     } else if (input >= 25 && input <= 35) {

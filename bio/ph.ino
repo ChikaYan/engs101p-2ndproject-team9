@@ -46,5 +46,4 @@ void ph() {
 
 void outputPh(){
     Serial.println(averagepHx);  //print average pH
-
 }
