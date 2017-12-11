@@ -22,6 +22,7 @@ void adjustRPM() {
     mixLastCheck = timer;
     attachInterrupt(sensorPin, rpmInterrupt, FALLING); // Enable the interrupt again
   }
+  analogWrite(motorPin, pwmValue);
 }
 
 void rpmInterrupt() // This function is run everytime an interrupt occurs

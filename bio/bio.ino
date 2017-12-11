@@ -17,7 +17,7 @@ short int i = 0;  //counter
 float rpm = 0; // RPM reading from sensor
 float rpmInput = 500; // The desired RPM value
 short int pwmValue = 130; // This value is written to the MOSFET
-volatile short int rpmCounter = 0; // Counts the number of interrupts per time interval
+volatile int rpmCounter = 0; // Counts the number of interrupts per time interval
 
 
 //for the temperature
@@ -66,9 +66,9 @@ void takeInputs() {
     if (input == 0) { // Quick way to turn off the motor if needed
       rpmInput = 0;
       pwmValue = 0;
-  } else if (input >= 500 && input <= 1500) {
+    } else if (input >= 500 && input <= 1500) {
       rpmInput = input;
-      pwmValue = 130 + ((rpmInput - 500) / ((1500 - 500) / (230 - 130))); // Generates an estimate of the PWM value for the desired RPM based off samples taken (assumes linear relationship)
+      pwmValue = getPWMEstimate(rpmInput); // Generates an estimate of the PWM value for the desired RPM based off samples taken (assumes linear relationship)
       // at PWM of 130, the RPM was 500
       // at PWM of 230, the RPM was 1500
     } else if (input >= 25 && input <= 35) {
@@ -81,4 +81,11 @@ void outPutResults() {
   outputT();
   outputRpm();
   outputPh();
+}
+
+int getPWMEstimate(float rpmInput) // Get a rough estimate of the correct PWM value
+{
+  float m = (1500 - 500) / (230 - 130);
+  int pwmEstimate = 130 + ((rpmInput-500) / m);
+  return pwmEstimate;
 }
