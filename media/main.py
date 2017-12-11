@@ -3,11 +3,11 @@ from tkinter import ttk
 from heat import HeatControl
 from ph import PhControl
 from mix import MixControl
-import datetime
+import time
 import serial
 
 READ_INTERVAL = 5000  # in milliseconds
-
+start_time = time.time()
 
 class Menu:
     def __init__(self, master):
@@ -55,14 +55,15 @@ class Menu:
                     self.ph_control.set_current("Current pH: " + str(data))
                     file = open("logs/ph.log", "a")
                 if file:
-                    now = datetime.datetime.now()
-                    file.write(str(now.minute) + ":" + str(data) + "\n")
+                    secs = int(time.time() - start_time)
+                    file.write(str(secs) + ":" + str(data) + "\n")
                     file.close()
 
         self.master.after(READ_INTERVAL, self.read_serial)  # Needed to read from Serial every 5000 ms
 
 
 def main():
+
     root = Tk()
     main = Menu(root)
     root.mainloop()
