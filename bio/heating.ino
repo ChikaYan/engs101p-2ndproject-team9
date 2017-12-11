@@ -19,7 +19,7 @@ void outputT(){
 // the equation:  1 / {A + B[ln(R)] + C[ln(R)]^3} where A,B and C are constants
 // function to convert the temperature from analog(raw) form to celsius
 double convertTemperature(int rawADC){
-    rawADC -=  10; // Modify the input value to calibrate the temperature
+    rawADC -=  2; // Modify the input value to calibrate the temperature
     double Tempo; // temporary variable
     Tempo = logf((10240000/rawADC) - 10000);
     // for 10k thermistor:

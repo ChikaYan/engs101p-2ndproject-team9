@@ -16,7 +16,7 @@ short int i = 0;  //counter
 #define motorPin P2_4
 float rpm = 0; // RPM reading from sensor
 float rpmInput = 500; // The desired RPM value
-short int pwmValue = 130; // This value is written to the MOSFET
+short int pwmValue = 26; // This value is written to the MOSFET
 volatile int rpmCounter = 0; // Counts the number of interrupts per time interval
 
 
@@ -85,7 +85,7 @@ void outPutResults() {
 
 int getPWMEstimate(float rpmInput) // Get a rough estimate of the correct PWM value
 {
-  float m = (1500 - 500) / (230 - 130);
-  int pwmEstimate = 130 + ((rpmInput-500) / m);
+  float m = (1500 - 500) / (32 - 26);
+  int pwmEstimate = 26 + ((rpmInput-500) / m);
   return pwmEstimate;
 }
